@@ -1,5 +1,4 @@
 #!/bin/bash
-#PBS -W group_list=P1
 #PBS -A MyName
 #PBS -N TestJob
 #PBS -l nodes=1:ppn=6
