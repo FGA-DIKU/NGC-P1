@@ -1,3 +1,10 @@
+### Conda
+
+```
+conda config --add channels https://vmc-nexus-01.ngc.vmc/repository/ngc-cloud-conda/main
+conda config --remove channels defaults
+```
+
 ### Poetry
 
 ```
