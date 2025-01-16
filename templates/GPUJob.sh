@@ -1,10 +1,9 @@
 #!/bin/bash
 #PBS -A MyName
 #PBS -N TestJob
-#PBS -l nodes=1:ppn=6
-#PBS -l mem=20gb
+#PBS -l nodes=1:ppn=6:gpus=1
+#PBS -l mem=5gb
 #PBS -l walltime=3:00:00
-#PBS -e $PBS_JOBID.err
 #PBS -o $PBS_JOBID.log
 #PBS -j oe
 
