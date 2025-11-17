@@ -1,4 +1,4 @@
-### Conda
+### Conda (currently not working)
 
 ```
 conda config --add channels https://vmc-nexus-01.ngc.vmc/repository/ngc-cloud-conda/main
