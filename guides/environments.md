@@ -1,7 +1,7 @@
-### Conda (currently not working)
+### Conda 
 
 ```
-conda config --add channels https://vmc-nexus-01.ngc.vmc/repository/ngc-cloud-conda/main
+conda config --add channels https://nexus.mgmt.cld/repository/ngc-cloud-conda/main
 conda config --remove channels defaults
 conda config --set ssl_verify /etc/pki/ca-trust/source/anchors/ngc-cloud-root-ca.pem
 ```
