@@ -9,9 +9,11 @@
 #PBS -t 1-3 
 
 cd $PBS_O_WORKDIR
+ARRAY_JOB_ID = $PBS_ARRAYID
 
 module load cmake/3.22.2
 module load miniconda3/4.12.0
 conda activate MyEnv
 
-python3 myscript.py
+
+python3 myscript.py 
