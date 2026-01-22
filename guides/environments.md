@@ -1,3 +1,5 @@
+Set up your environment on the login node (ssh login)
+
 ### Conda 
 
 ```
@@ -5,6 +7,7 @@ module load miniconda3/4.12.0
 conda config --add channels https://nexus.mgmt.cld/repository/ngc-cloud-conda/main
 conda config --remove channels defaults
 conda config --set ssl_verify /etc/pki/ca-trust/source/anchors/ngc-ca-cld.pem
+pip install ....
 ```
 
 ### Pip stand-alone
