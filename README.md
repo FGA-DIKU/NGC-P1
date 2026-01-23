@@ -1,3 +1,10 @@
+# Resources:
+- [Environments](./guides/environments.md)
+- [Git repositories](./guides/git_repos.md)
+- [GPU Job template](./templates/GPUJob.sh)
+- [Handy links](./links.md)
+- [Node overview](#node-overview)
+
 # Node overview:
 
 ## Login Node
