@@ -18,3 +18,45 @@ Usage: Debugging, faster jobs, testing. Anything goes. No rules.
 ## Job Nodes:
 Access: Through the [Moab-TORQUE](https://docs.adaptivecomputing.com/mwm/7-0/Content/pbsintegration.html) scheduler (see [GPU Jobs](./templates/GPUJob.sh)).
 Usage: HPC workloads of up to 7 days.
+
+
+# Data overview
+
+## Fast Storage
+```
+/projects/users/data/
+├── UCPH/
+|   ├── CoBra/
+|   ├── DeepFetal/
+|   |   ├── ultrasound/
+|   |   ├── projects/
+|   ├── ICP/
+|   |   ├── organized_data/
+|   |   ├── projects/
+|   ├── MartinSillesen/
+```
+
+## Slow Storage
+```
+/storage/archive
+├── UCPH/
+|   ├── asparagus/
+|   ├── CoBra/
+|   |   ├── computerome/
+|   |   ├── organized_data/
+|   |   ├── projects/
+|   |   ├── tables/
+|   |   ├── software/
+|   ├── DeepFetal/
+|   |   ├── ultrasound/
+|   |   ├── SDS/
+|   |   ├── SP/
+|   ├── FOMO25/
+|   ├── MartinSillesen/
+|   |   ├── archived_projects/
+|   |   ├── data/
+|   ├── PHAIR/
+|   |   ├── adr/
+|   |   ├── dhr/
+|   |   ├── phair_backup/
+```
