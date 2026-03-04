@@ -1,9 +1,10 @@
 # Resources:
-- [Environments](./guides/environments.md)
+- [Environments and PIP](./guides/environments.md)
 - [Git repositories](./guides/git_repos.md)
 - [GPU Job template](./templates/GPUJob.sh)
 - [Handy links](./links.md)
 - [Node overview](#node-overview)
+- [Transferring data and SFTP](./guides/transfer_data.md)
 
 # Node overview:
 
