@@ -13,7 +13,7 @@ Access: ```ssh login```
 Usage: use to install your environment and queue jobs (see [GPU Jobs](./templates/GPUJob.sh)). DO NOT run anything heavy on this node. It is made of paper.
 
 ## Interactive Nodes:
-Access: ```ssh worker01``` or ```ssh worker02```
+Access: ```ssh worker01```
 Usage: Debugging, faster jobs, testing. Anything goes. No rules. 
 
 ## Job Nodes:
