@@ -24,6 +24,12 @@ Usage: use to install your environment and queue jobs (see [GPU Jobs](./template
 Access: ```ssh worker01```
 Usage: Debugging, faster jobs, testing. Anything goes. No rules. 
 
+## Interactive Jobs:
+CPU Access: ```qsub -I -l nodes=1:ppn=5 -l walltime=00:15:00```
+GPU Access: ```qsub -I -l nodes=1:gpus=1:ppn=5 -l walltime=00:15:00```
+
+Exit: ctrl+d
+
 ## Job Nodes:
 Access: Through the [Moab-TORQUE](https://docs.adaptivecomputing.com/mwm/7-0/Content/pbsintegration.html) scheduler (see [GPU Jobs](./templates/GPUJob.sh)).
 Usage: HPC workloads of up to 7 days.
