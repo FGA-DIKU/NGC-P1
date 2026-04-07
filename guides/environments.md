@@ -8,6 +8,7 @@ conda config --add channels https://nexus.mgmt.cld/repository/ngc-cloud-conda/ma
 conda config --remove channels defaults
 conda config --set ssl_verify /etc/pki/ca-trust/source/anchors/ngc-ca-cld.pem
 conda create -n YOUR_ENV python=PYTHON_VERSION_HERE
+conda activate YOUR_ENV
 pip install <YOUR_PACKAGE_HERE>
 ```
 
