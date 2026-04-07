@@ -7,6 +7,7 @@ module load miniconda3/4.12.0
 conda config --add channels https://nexus.mgmt.cld/repository/ngc-cloud-conda/main
 conda config --remove channels defaults
 conda config --set ssl_verify /etc/pki/ca-trust/source/anchors/ngc-ca-cld.pem
+conda create -n YOUR_ENV python=PYTHON_VERSION_HERE
 pip install <YOUR_PACKAGE_HERE>
 ```
 
