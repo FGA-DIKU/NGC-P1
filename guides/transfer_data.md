@@ -3,7 +3,8 @@ Transferring data into NGC can happen in 1 of 3 ways:
 2. Git repository cloning/pulling using the Git Mirror Manager. See the [git repos guide](./guides/git_repos.md)
 3. SFTP. See below.
 
-The SFTP server acts as a link between the outside and NGC and is by default disabled for everyone. The link is bidirectional `outside <--> SFTP <--> NGC` so you can both import and export if allowed
+The SFTP server acts as a link between the outside and NGC and is by default disabled for everyone. The link is bidirectional `outside <--> SFTP <--> NGC` so you can both import and export if allowed.
+
 If you need to move something in or out of NGC and you cannot use method 1 or 2, reach out to a server admin. In your message include what you have to move and any relevant documentation stating that the transfer is legal. For moving sensitive data into NGC a data processing agreement (or similar) is required. For moving sensitive data out of NGC approval from data-specific PI is required.
 
 Once your data move request is approved an SFTP account will be created for you or your existing account will be re-enabled and you will be given exclusive access to one of three directories in the SFTP server. Note that this means two things: 1. it's a completely separate account and 2. if none of the three directories are available your move has to wait. The directory structure inside the SFTP looks like this:
