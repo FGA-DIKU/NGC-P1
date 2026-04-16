@@ -11,6 +11,9 @@ ml load R/4.0.0
 ml load rstudio/1.4.1106
 rstudio
 ```
+After putting in the ```qsub``` command the scheduler will try to find resources for your job and as soon as it finds those it will redirect your current terminal session to the node with your resources. After this you continue with the next commands. 
+For example if you started on the login node your terminal would go from looking like this: ```[seblla@cld076-0001 ~]$``` to this ```[seblla@worker06 ~]$```, assuming your job got scheduled on worker06. Then you continue with the ```ml load``` commands etc.
+
 If you finish before your allocated time runs out press control+D or simply close the terminal with the job.
 
 ### Method 2: Access through Worker01
