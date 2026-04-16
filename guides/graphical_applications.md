@@ -1,5 +1,7 @@
 Always start your session with (without -Y nothing will work):
-```ssh -Y login```
+```
+ssh -Y login
+```
 
 To get 4 CPUS allocated for 1 hour (adapt as needed):
 ```
