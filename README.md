@@ -20,17 +20,22 @@ This process usually takes 1-2 weeks and will get you set up on NGC's Omnissa Ho
 Access: ```ssh login```
 Usage: use to install your environment and queue jobs (see [GPU Jobs](./templates/GPUJob.sh)). DO NOT run anything heavy on this node. It is made of paper.
 
-## Interactive Nodes:
+## Interactive Node:
+We have 1 interactive node with SSH access.
+
 Access: ```ssh worker01```
 Usage: Debugging, faster jobs, testing. Anything goes. No rules. 
 
 ## Interactive Jobs:
+Interactive Jobs are regular jobs that go through the queue to the compute nodes WITH shell access.
 CPU Access: ```qsub -I -l nodes=1:ppn=5 -l walltime=00:15:00```
 GPU Access: ```qsub -I -l nodes=1:gpus=1:ppn=5 -l walltime=00:15:00```
 
 Exit: ctrl+d
 
-## Job Nodes:
+## Compute Nodes:
+We have 6 compute nodes only accessible through the scheduler. Each node has 2 H100 GPUs with 80GB VRAM, ~750GB RAM and 64 CPU Cores.
+
 Access: Through the [Moab-TORQUE](https://docs.adaptivecomputing.com/mwm/7-0/Content/pbsintegration.html) scheduler (see [GPU Jobs](./templates/GPUJob.sh)).
 Usage: HPC workloads of up to 7 days.
 
@@ -45,10 +50,13 @@ Usage: HPC workloads of up to 7 days.
 |   ├── DeepFetal/
 |   |   ├── ultrasound/
 |   |   ├── projects/
+|   ├── FOMO26/
 |   ├── ICP/
 |   |   ├── organized_data/
 |   |   ├── projects/
 |   ├── MartinSillesen/
+|   |   ├── EHR/
+|   |   ├── projects/
 ```
 
 ## Slow Storage
@@ -63,13 +71,14 @@ Usage: HPC workloads of up to 7 days.
 |   |   ├── tables/
 |   |   ├── software/
 |   ├── DeepFetal/
-|   |   ├── ultrasound/
+|   |   ├── genetics/
 |   |   ├── SDS/
 |   |   ├── SP/
+|   |   ├── ultrasound/
 |   ├── FOMO25/
 |   ├── MartinSillesen/
 |   |   ├── archived_projects/
-|   |   ├── data/
+|   |   ├── data/methylation
 |   ├── PHAIR/
 |   |   ├── adr/
 |   |   ├── dhr/
