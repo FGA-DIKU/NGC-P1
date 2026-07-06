@@ -29,6 +29,11 @@ For an overview of the available compute resources see the [Node overview](./gui
 
 # FAQ:
 
+### Graphical interfaces and notebooks
+
+To use R or other applications requiring graphical interfaces see the [graphical applications](./guides/graphical_applications.md) guide.
+To use Jupyter notebooks see the [jupyter notebook](./jupyter_notebook.md) guide.
+
 ### Passwords
 
 Remember that you have up to 3 passwords for NGC: (1) Your VDI password for Omnissa, (2) Your HPC password for the compute environment, and (3) Your SFTP password. They are all independent and will be reset at different intervals, so treat them as completely separate.
