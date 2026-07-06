@@ -22,7 +22,7 @@ For an overview of the available compute resources see the [Node overview](./gui
 
 1. Set up environment: [Environments and PIP](./guides/environments.md)
 2. Set up GIT repos: [Git repositories](./guides/git_repos.md)
-3. Set up the file explorer: [File Explorer](.guides/file_explorer.md)
+3. Set up the file explorer: [File Explorer](./guides/file_explorer.md)
 4. Test code on Worker01: [Node overview](./guides/server_overview.md#Node-overview).
 5. Write job script: [GPU Job template](./templates/GPUJob.sh)
 6. Start job using `qsub MYJOBSCRIPT.sh`
