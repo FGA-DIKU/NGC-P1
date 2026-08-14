@@ -40,7 +40,7 @@ To use Jupyter notebooks see the [jupyter notebook](./jupyter_notebook.md) guide
 Remember that you have up to 3 passwords for NGC: (1) Your VDI password for Omnissa, (2) Your HPC password for the compute environment, and (3) Your SFTP password. They are all independent and will be reset at different intervals, so treat them as completely separate.
 
 To reset your HPC password go to the [IPA URL](./links.md)
-To reset your SFTP password go to the [SFTP URL](.links.md)
+To reset your SFTP password go to the [SFTP URL](./links.md)
 
 # Advanced
 
