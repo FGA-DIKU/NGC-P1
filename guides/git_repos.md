@@ -7,5 +7,5 @@ To download git repos navigate to https://cld076-0006.cld076.vmc
 
 To update/pull changes repeat 1-2 and then do "git pull" inside the repository.
 
-Private repos: https://<GITHUB_USERNAME>:<PERSONAL_ACCESS_TOKEN>@github.com/<GITHUT_USERNAME>/<REPO>.git
+Private repos (use a scope-limited token here): https://<GITHUB_USERNAME>:<PERSONAL_ACCESS_TOKEN>@github.com/<GITHUT_USERNAME>/<REPO>.git
 (without <> and with relevant information instead of capitalized stuff)
