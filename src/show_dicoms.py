@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pydicom
 from pydicom.misc import is_dicom
+from pydicom.pixel_data_handlers import gdcm_handler
 from pydicom.pixel_data_handlers.util import (
     apply_color_lut,
     apply_modality_lut,
@@ -35,11 +36,16 @@ def find_dicoms(directory: Path, recursive: bool) -> list:
 
 
 def decompress_if_needed(ds):
-    """Decompress a compressed DICOM in place."""
-    if ds.file_meta.TransferSyntaxUID.is_compressed:
+    """Decompress a compressed DICOM in place using GDCM."""
+    syntax = ds.file_meta.TransferSyntaxUID
+    if syntax.is_compressed:
         try:
-            # pydicom 2 tries GDCM first, which keeps RGB JPEGs as RGB
-            ds.decompress()
+            # Without GDCM pydicom falls back to pylibjpeg, which turns RGB
+            # lossless JPEGs green and pink, so require GDCM where it applies
+            if gdcm_handler.supports_transfer_syntax(syntax):
+                ds.decompress("gdcm")
+            else:
+                ds.decompress()
             ds.file_meta.TransferSyntaxUID = pydicom.uid.ExplicitVRLittleEndian
             ds["PixelData"].is_undefined_length = False
         except Exception as e:
