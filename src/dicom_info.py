@@ -6,7 +6,6 @@ Usage: python dicom_info.py <file.dcm> [<file.dcm> ...]
 import sys
 import warnings
 
-import matplotlib
 import numpy as np
 import PIL
 import pydicom
@@ -117,7 +116,6 @@ def main():
         "pydicom", pydicom.__version__,
         "| numpy", np.__version__,
         "| pillow", PIL.__version__,
-        "| matplotlib", matplotlib.__version__, matplotlib.get_backend(),
     )
     for path in sys.argv[1:]:
         describe(path)

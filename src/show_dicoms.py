@@ -14,7 +14,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pydicom
 from pydicom.misc import is_dicom
-from pydicom.pixels import apply_color_lut, apply_modality_lut, apply_voi_lut
+from pydicom.pixel_data_handlers.util import (
+    apply_color_lut,
+    apply_modality_lut,
+    apply_voi_lut,
+    convert_color_space,
+)
 
 
 def find_dicoms(directory: Path, recursive: bool) -> list:
@@ -33,12 +38,8 @@ def decompress_if_needed(ds):
     """Decompress a compressed DICOM in place."""
     if ds.file_meta.TransferSyntaxUID.is_compressed:
         try:
-            declared_rgb = ds.get("PhotometricInterpretation") == "RGB"
-            # pydicom 3 overrides an RGB label to YBR on a JFIF marker and then
-            # converts RGB samples again
-            ds.decompress(as_rgb=not declared_rgb)
-            if declared_rgb:
-                ds.PhotometricInterpretation = "RGB"
+            # pydicom 2 tries GDCM first, which keeps RGB JPEGs as RGB
+            ds.decompress()
             ds.file_meta.TransferSyntaxUID = pydicom.uid.ExplicitVRLittleEndian
             ds["PixelData"].is_undefined_length = False
         except Exception as e:
@@ -53,7 +54,6 @@ def load_image(path: Path):
     if "TransferSyntaxUID" not in dcm.file_meta:
         dcm.file_meta.TransferSyntaxUID = pydicom.uid.ImplicitVRLittleEndian
     decompress_if_needed(dcm)
-    # pydicom 3 already converts YBR to RGB here
     img = dcm.pixel_array
     samples = int(dcm.get("SamplesPerPixel", 1))
     photometric = str(dcm.get("PhotometricInterpretation", ""))
@@ -61,6 +61,10 @@ def load_image(path: Path):
     # Multi-frame files show the middle frame
     if (samples == 1 and img.ndim == 3) or (samples > 1 and img.ndim == 4):
         img = img[img.shape[0] // 2]
+
+    # pydicom 2 leaves YBR data as YBR
+    if photometric in ("YBR_FULL", "YBR_FULL_422"):
+        img = convert_color_space(img, photometric, "RGB")
 
     if photometric == "PALETTE COLOR":
         img = apply_color_lut(img, dcm)
