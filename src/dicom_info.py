@@ -9,9 +9,8 @@ import warnings
 import numpy as np
 import PIL
 import pydicom
-from pydicom.encaps import generate_fragments, generate_frames
-from pydicom.pixels import pixel_array
-from pydicom.pixels.decoders.base import get_decoder
+from pydicom.encaps import decode_data_sequence, generate_pixel_data_frame
+from pydicom.pixel_data_handlers.util import convert_color_space
 
 
 def white_stats(img) -> str:
@@ -25,6 +24,13 @@ def white_stats(img) -> str:
         f"top 20% {white[..., :top, :].mean():.0%}, "
         f"rest {white[..., top:, :].mean():.0%}"
     )
+
+
+def to_rgb(img, photometric: str):
+    """Convert YBR data to RGB, since pydicom 2 leaves it as YBR."""
+    if photometric in ("YBR_FULL", "YBR_FULL_422"):
+        return convert_color_space(img, photometric, "RGB")
+    return img
 
 
 def jpeg_header(frame: bytes) -> str:
@@ -61,6 +67,7 @@ def describe(path: str):
     """Print one file's color-related header fields and pixel stats."""
     dcm = pydicom.dcmread(path, force=True)
     syntax = dcm.file_meta.get("TransferSyntaxUID")
+    photometric = str(dcm.get("PhotometricInterpretation", ""))
     print(path)
     print(
         "  ",
@@ -83,8 +90,8 @@ def describe(path: str):
         print(f"   raw bytes: {(raw == 255).mean():.0%} are 255")
     else:
         num_frames = int(dcm.get("NumberOfFrames", 1) or 1)
-        fragments = list(generate_fragments(dcm.PixelData))
-        frame = next(generate_frames(dcm.PixelData, number_of_frames=num_frames))
+        fragments = decode_data_sequence(dcm.PixelData)
+        frame = next(generate_pixel_data_frame(dcm.PixelData, num_frames))
         print(
             f"   compressed: {len(fragments)} fragments, "
             f"{len(frame)} bytes in first frame"
@@ -94,7 +101,7 @@ def describe(path: str):
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always")
         try:
-            img = dcm.pixel_array
+            img = to_rgb(dcm.pixel_array, photometric)
             print("   decoded", img.shape, img.dtype, white_stats(img))
         except Exception as e:
             print("   decode error:", e)
@@ -103,12 +110,20 @@ def describe(path: str):
 
     # Compressed: compare every installed decoder
     if syntax.is_compressed:
-        for plugin in sorted(get_decoder(syntax).available_plugins):
+        for handler in pydicom.config.pixel_data_handlers:
+            if not handler.is_available():
+                continue
+            if not handler.supports_transfer_syntax(syntax):
+                continue
+            name = handler.__name__.split(".")[-1].removesuffix("_handler")
+            # Read the file again so each decoder starts from the compressed data
+            ds = pydicom.dcmread(path, force=True)
             try:
-                img = pixel_array(path, decoding_plugin=plugin)
-                print("   with", plugin, white_stats(img))
+                ds.convert_pixel_data(name)
+                img = to_rgb(ds.pixel_array, photometric)
+                print("   with", name, white_stats(img))
             except Exception as e:
-                print("   with", plugin, "error:", e)
+                print("   with", name, "error:", e)
 
 
 def main():
