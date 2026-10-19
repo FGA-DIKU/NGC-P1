@@ -1,6 +1,8 @@
-"""Show up to 25 DICOM files from a directory in a grid in a pop-out window.
+"""Show the DICOM files in a directory, 6 at a time, in pop-out windows.
 
-Usage: python show_dicoms.py <directory> [--recursive] [--max-files N]
+Closing a window opens the next one.
+
+Usage: python show_dicoms.py <directory> [--recursive] [--per-window N]
 """
 
 import argparse
@@ -15,13 +17,11 @@ from pydicom.misc import is_dicom
 from pydicom.pixels import apply_color_lut, apply_modality_lut, apply_voi_lut
 
 
-def find_dicoms(directory: Path, recursive: bool, max_files: int) -> list:
-    """Return up to max_files DICOM paths in the directory, sorted by path."""
+def find_dicoms(directory: Path, recursive: bool) -> list:
+    """Return all DICOM paths in the directory, sorted by path."""
     pattern = "**/*" if recursive else "*"
     paths = []
     for path in sorted(directory.glob(pattern)):
-        if len(paths) >= max_files:
-            break
         if not path.is_file():
             continue
         if path.suffix.lower() in {".dcm", ".dicom"} or is_dicom(path):
@@ -57,16 +57,16 @@ def load_image(path: Path):
     return img, None
 
 
-def show_grid(directory: Path, paths: list):
-    """Plot the images in a square-ish grid, with the file name above each."""
-    cols = math.ceil(math.sqrt(len(paths)))
-    rows = math.ceil(len(paths) / cols)
-    # Up to 3 inches per image, keeping the window under 9 inches tall
-    size = min(3, 9 / rows)
+def show_grid(directory: Path, paths: list, slots: int, title: str):
+    """Plot the images in a grid and wait for the window to be closed."""
+    cols = math.ceil(math.sqrt(slots))
+    rows = math.ceil(slots / cols)
+    # Up to 4 inches per image, keeping the window under 9 inches tall
+    size = min(4, 9 / rows)
     fig, axes = plt.subplots(
         rows, cols, figsize=(size * cols, size * rows), squeeze=False
     )
-    fig.canvas.manager.set_window_title(str(directory))
+    fig.canvas.manager.set_window_title(title)
 
     for ax in axes.flat:
         ax.axis("off")
@@ -97,14 +97,26 @@ def main():
     parser.add_argument(
         "--recursive", action="store_true", help="Also search subdirectories"
     )
-    parser.add_argument("--max-files", type=int, default=25)
+    parser.add_argument(
+        "--per-window", type=int, default=6, help="Images per window (default: 6)"
+    )
     args = parser.parse_args()
 
-    paths = find_dicoms(args.directory, args.recursive, args.max_files)
+    paths = find_dicoms(args.directory, args.recursive)
     if not paths:
         parser.error(f"No DICOM files found in {args.directory}")
-    print(f"Showing {len(paths)} DICOM files from {args.directory}")
-    show_grid(args.directory, paths)
+
+    per_window = args.per_window
+    # Keep the same grid in every window, unless there are fewer files than that
+    slots = min(per_window, len(paths))
+    num_windows = math.ceil(len(paths) / per_window)
+    print(f"Found {len(paths)} DICOM files in {args.directory}")
+    print("Close each window to open the next, or press Ctrl+C here to stop")
+    for i in range(num_windows):
+        window_paths = paths[i * per_window : (i + 1) * per_window]
+        title = f"{args.directory} ({i + 1}/{num_windows})"
+        print(f"Window {i + 1}/{num_windows}")
+        show_grid(args.directory, window_paths, slots, title)
 
 
 if __name__ == "__main__":
