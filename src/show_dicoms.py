@@ -29,12 +29,30 @@ def find_dicoms(directory: Path, recursive: bool) -> list:
     return paths
 
 
+def decompress_if_needed(ds):
+    """Decompress a compressed DICOM in place."""
+    if ds.file_meta.TransferSyntaxUID.is_compressed:
+        try:
+            declared_rgb = ds.get("PhotometricInterpretation") == "RGB"
+            # pydicom 3 overrides an RGB label to YBR on a JFIF marker and then
+            # converts RGB samples again
+            ds.decompress(as_rgb=not declared_rgb)
+            if declared_rgb:
+                ds.PhotometricInterpretation = "RGB"
+            ds.file_meta.TransferSyntaxUID = pydicom.uid.ExplicitVRLittleEndian
+            ds["PixelData"].is_undefined_length = False
+        except Exception as e:
+            raise RuntimeError(f"Failed to decompress: {e}")
+    return ds
+
+
 def load_image(path: Path):
     """Read a DICOM as a displayable array plus the colormap to show it with."""
     # force=True also reads files without the standard DICOM header preamble
     dcm = pydicom.dcmread(path, force=True)
     if "TransferSyntaxUID" not in dcm.file_meta:
         dcm.file_meta.TransferSyntaxUID = pydicom.uid.ImplicitVRLittleEndian
+    decompress_if_needed(dcm)
     # pydicom 3 already converts YBR to RGB here
     img = dcm.pixel_array
     samples = int(dcm.get("SamplesPerPixel", 1))
